@@ -36,7 +36,7 @@ Feature:Search bar feature
 #  When the user enter multiple product name
 #  Then The product result should be displayed
 
-@smoke
+
 Scenario Outline: Verify that user is able to search for a product with multiple words
   Given  the user navigate to home page
   When  the user enter the "<productDESCRIPTION>"
