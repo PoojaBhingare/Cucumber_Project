@@ -2,6 +2,7 @@ package steps;
 
 import io.cucumber.java.Before;
 import io.cucumber.java.Scenario;
+import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
@@ -13,15 +14,17 @@ import pages.Homepage;
 import utils.BrowserManager;
 import utils.QaProps;
 import utils.TestDataReader;
+import utils.WaitUtils;
 
 import java.util.HashMap;
+
 
 public class StepDefinitions {
     private WebDriver driver;
     Homepage homePage;
     HashMap<String,String>data;
     Scenario scenario;
-
+    String url;
 
     public StepDefinitions(BrowserManager browserManager){
         this.driver = browserManager.getDriver();
@@ -32,11 +35,10 @@ public class StepDefinitions {
     }
 
 
-
-
     @Given("the user navigate to home page")
     public void theUserNavigateToHomePage() {
         driver.get(QaProps.getValue("url"));
+        url=QaProps.getValue("url");driver.get(url);
         homePage = new Homepage(driver);
         homePage.getClosed().sendKeys(Keys.ENTER);
         homePage.getSearchBar().sendKeys(Keys.ENTER);
@@ -88,10 +90,8 @@ public class StepDefinitions {
     }
 
     @Then("The product result should displayed for in product name")
-    public void theProductResultShouldDisplayedForInProductName() throws InterruptedException{
-//        String text =homePage.getDisplay().getText();
-//        Assert.assertEquals(text,data.get("iphonee"));
-        Thread.sleep(5000);
+    public void theProductResultShouldDisplayedForInProductName() {
+        WaitUtils.waitTillVisible(driver,this.homePage.getSearchBar());
         WebElement search_info=homePage.getSearchBar();
         Assert.assertTrue(search_info.isDisplayed());
 
@@ -108,8 +108,8 @@ public class StepDefinitions {
     }
 
     @Then("The product result should be displayed for special character name of product")
-    public void theProductResultShouldBeDisplayedForSpecialCharacterNameOfProduct()throws InterruptedException {
-        Thread.sleep(5000);
+    public void theProductResultShouldBeDisplayedForSpecialCharacterNameOfProduct() {
+        WaitUtils.waitTillVisible(driver,this.homePage.getSearchBar());
         WebElement search_info=homePage.getSearchBar();
         Assert.assertTrue(search_info.isDisplayed());
 
@@ -124,9 +124,9 @@ public class StepDefinitions {
     }
 
     @Then("The product result should be display for product with multiple words")
-    public void theProductResultShouldBeDisplayForProductWithMultipleWords() throws InterruptedException{
+    public void theProductResultShouldBeDisplayForProductWithMultipleWords() {
         WebElement search_info =homePage.getSearchresult();
-        Thread.sleep(2000);
+        WaitUtils.waitTillVisible(driver,this.homePage.getSearchresult());
         Assert.assertTrue(search_info.isDisplayed());
 
     }
